@@ -70,7 +70,12 @@ class Blog extends Component {
         <Switch>
           {this.state.auth ? <Route path="/new-post" component={NewPost} /> : null}
           <Route path="/posts" component={Posts} />
-          <Redirect from="/" to="/posts"></Redirect>
+          {/* This will catch all the unknown routes.
+          This will not work together with <Redirect>, if you rediret from="/" bcz 
+          from="/" is treated as prefix therefore this catches all routes
+          as does <Route render={() => <h1>not Found</h1>} />.  */}
+          <Route render={() => <h1>not Found</h1>} />
+          {/* <Redirect from="/" to="/posts"></Redirect> */}
         </Switch>
       </div>
     );
