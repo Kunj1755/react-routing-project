@@ -2,10 +2,13 @@ import React, { Component } from "react";
 import axios from "../../axios";
 import "./Blog.css";
 import Posts from "./Posts/Posts";
-import { Route, NavLink, Switch } from "react-router-dom";
+import { Route, NavLink, Switch, Redirect } from "react-router-dom";
 import NewPost from "./NewPost/NewPost";
 
 class Blog extends Component {
+  state = {
+    auth: false
+  }
   componentDidMount() {
     axios
       .get("/posts")
@@ -62,9 +65,12 @@ class Blog extends Component {
         {/* <Route path="/" exact render={() => <h1>Home</h1>} />
         <Route path="/" render={() => <h1>Home 2</h1>} /> */}
         {/* this will load Posts component */}
+        {/*  The below is a guard. An alternative to this would 
+        be to go the guarded page and write auth condition in componentDidMount() */}
         <Switch>
-          <Route path="/new-post" component={NewPost} />
-          <Route path="/" component={Posts} />
+          {this.state.auth ? <Route path="/new-post" component={NewPost} /> : null}
+          <Route path="/posts" component={Posts} />
+          <Redirect from="/" to="/posts"></Redirect>
         </Switch>
       </div>
     );
